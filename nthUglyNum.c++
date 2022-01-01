@@ -5,46 +5,35 @@ using namespace std;
 
 #define ull unsigned long long
 
-//DP Solution: TC: O(N), SC: O(N)
-
- // } Driver Code Ends
-//User function template for C++
 class Solution{
 public:	
 	// #define ull unsigned long long
 	/* Function to get the nth ugly number*/
 	ull getNthUglyNo(int n) {
 	    // code here
-	    ull ugly[n];
-        unsigned i2 = 0, i3 = 0, i5 = 0;
-        ull next_multiple_of_2 = 2;
-        ull next_multiple_of_3 = 3;
-        ull next_multiple_of_5 = 5;
-        ull nextUgly = 1;
+	    if (n == 1 or n == 2 or n == 3 or n == 4 or n == 5)
+            return n;
+        //using set and not minheap to avoid duplicate numbers
+        set<ull> s;
+        s.insert(1);
+        n--;
      
-        ugly[0] = 1;
-        for (int i = 1; i < n; i++) {
-            nextUgly = min(
-                next_multiple_of_2,
-                min(next_multiple_of_3, next_multiple_of_5));
-            ugly[i] = nextUgly;//for further steps
+        while (n) {
+            auto it = s.begin();
+     
+            long long int x = *it;
+            //cout << x << " ";
             
-            if (nextUgly == next_multiple_of_2) {//move forward in multiple of 2
-                i2 = i2 + 1;
-                next_multiple_of_2 = ugly[i2] * 2;
-            }
-            if (nextUgly == next_multiple_of_3) {
-                i3 = i3 + 1;
-                next_multiple_of_3 = ugly[i3] * 3;
-            }
-            if (nextUgly == next_multiple_of_5) {
-                i5 = i5 + 1;
-                next_multiple_of_5 = ugly[i5] * 5;
-            }
-        } 
-       
-        // End of for loop (i=1; i<n; i++)
-        return nextUgly;
+            s.erase(it);
+     
+            s.insert(x * 2);
+            s.insert(x * 3);
+            s.insert(x * 5);
+            n--;
+        }
+     
+        // The top of the set represents the nth ugly number
+        return *s.begin();
 	}
 };
 
